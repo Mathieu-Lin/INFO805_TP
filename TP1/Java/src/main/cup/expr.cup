@@ -1,0 +1,105 @@
+package TP1.Java.src.main.java;
+import java_cup.runtime.Symbol;
+import java.util.HashMap;
+
+class Parser;
+
+action code {:
+    // Table des symboles pour stocker les variables
+    HashMap<String, Integer> variables = new HashMap<>();
+    boolean erreur_detectee = false;
+:};
+
+parser code {:
+    public void report_error(String message, Object info) {
+        String m = "";
+        if (info instanceof java_cup.runtime.Symbol) {
+            Symbol s = ((Symbol) info);
+            if (s != null && s.left >= 0 ) {
+                /* Ajoute le numero de ligne et de colonne */
+                m =  "Ligne " + (s.left+1) + ", Colonne " + (s.right+1) + " : ";
+            }
+        }
+        m = m + message;
+        System.err.println(m);
+    }
+:};
+
+/* Symboles terminaux */
+terminal PLUS, MOINS, MUL, DIV, MOD, PG, PD, SEMI, EQUAL, LET;
+terminal Integer ENTIER;
+terminal String IDENT;
+/* Declared MOINS_UNAIRE here to fix the first error */
+terminal MOINS_UNAIRE;
+
+/* Non terminaux */
+non terminal listeexpr, ligne;
+non terminal Integer expr;
+
+/* Precedences (from lowest to highest) */
+precedence left PLUS, MOINS;
+precedence left MUL, DIV, MOD;
+precedence left MOINS_UNAIRE;
+
+/* Grammaire */
+
+listeexpr ::= listeexpr ligne
+            | ligne
+            ;
+
+ligne ::= expr:e SEMI
+          {:
+             if (!erreur_detectee) {
+                 System.out.println("Ligne " + (eleft+1) + " , Colonne " + (eright+1) + " : Eval = " + e);
+             }
+             // Réinitialiser pour la prochaine ligne
+             erreur_detectee = false;
+          :}
+        | LET IDENT:i EQUAL expr:e SEMI
+          {:
+             if (!erreur_detectee) {
+                 variables.put(i, e);
+                 variables.put(i, e);
+                 System.out.println("Ligne " + (eleft+1) + " , Colonne " + (eright+1) + " : Eval = " + e);
+             }
+             erreur_detectee = false;
+          :}
+        | error SEMI
+          {:
+             erreur_detectee = false; // Reset en cas d'erreur de syntaxe aussi
+          :}
+        ;
+
+expr ::= expr:e1 PLUS expr:e2  {: RESULT = e1 + e2; :}
+       | expr:e1 MOINS expr:e2 {: RESULT = e1 - e2; :}
+       | expr:e1 MUL expr:e2   {: RESULT = e1 * e2; :}
+       | expr:e1 DIV expr:e2
+         {:
+         if (!erreur_detectee){
+            if (e2 == 0) {
+                parser.report_error("Erreur division par zero", new Symbol(ParserSym.DIV, e2left, e2right));
+                erreur_detectee = true; // <--- SIGNALER L'ERREUR
+                RESULT = 0;
+            } else {
+                if (e2 != 0) RESULT = e1 / e2; else RESULT = 0; // Sécurité java
+            }
+         }
+
+         :}
+       | expr:e1 MOD expr:e2   {: RESULT = e1 % e2; :}
+       | MOINS expr:e          {: RESULT = -e; :} %prec MOINS_UNAIRE
+       | IDENT:i
+         {:
+         if (!erreur_detectee){
+            if (variables.containsKey(i)) {
+                RESULT = variables.get(i);
+            } else {
+                parser.report_error("Erreur variable indefinie", new Symbol(ParserSym.IDENT, ileft, iright));
+                erreur_detectee = true;
+                RESULT = 0;
+            }
+         }
+         :}
+       | ENTIER:e              {: RESULT = e; :}
+       | PG expr:e PD          {: RESULT = e; :}
+       ;
