@@ -6,6 +6,10 @@
 
 ## TP1 (20/01/2026) 
 
+Compilation « l'évaluateur »
+
+L'objectif du TP est de se familiariser avec les outils JFlex et CUP.
+
 ### Java
 
 #### Installation
@@ -40,5 +44,9 @@ gcc TP1/C/expr.tab.c TP1/C/lex.yy.c -o TP1/C/parser
 
 ## TP2
 
+à suivre
+
 ## TP3
+
+à suivre
 
