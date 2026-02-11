@@ -42,11 +42,30 @@ gcc TP1/C/expr.tab.c TP1/C/lex.yy.c -o TP1/C/parser
 ./TP1/C/parser < TP1/C/result/tpEvaluateurSource.txt
 ```
 
-## TP2
+## TP2 (11/02/2026) 
 
-à suivre
+Génération d'arbres abstraits
+
+L'objectif du TP est d'utiliser les outils JFlex et CUP pour générer des arbres abstraits correspondant à un sous ensemble du langage λ-ada.
+
+### Java
+
+#### Installation
+
+Vous aurez besoin d'installer Java dans le terminal.
+
+#### Exécution
+```bash
+java -jar jflex-full-1.9.1.jar -d TP2/src/main/java/fr/usmb/m1isc/compilation/tp/ TP2/src/main/jflex/AnalyseurLexical.jflex
+java -jar java-cup-11b.jar -destdir TP2/src/main/java/fr/usmb/m1isc/compilation/tp/ TP2/src/main/cup/AnalyseurSyntaxique.cup
+javac -cp ".;java-cup-11b-runtime.jar" TP2/src/main/java/fr/usmb/m1isc/compilation/tp/*.java
+java -cp ".;java-cup-11b-runtime.jar" TP2.src.main.java.fr.usmb.m1isc.compilation.tp.Main TP2/result/tpEvaluateurSource.txt
+```
 
 ## TP3
 
 à suivre
 
+## TP4
+
+à suivre
