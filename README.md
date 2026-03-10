@@ -4,6 +4,10 @@
 - Master 1 informatique semestre 8 
 - 2026
 
+## Consignes d'exécution
+
+Restez à l'origine du dossier INFO805_TP/
+
 ## TP1 (20/01/2026) 
 
 Compilation « l'évaluateur »
