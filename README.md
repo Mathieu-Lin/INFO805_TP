@@ -82,7 +82,7 @@ javac -cp ".;java-cup-11b-runtime.jar" TP34/exercice1/main/java/fr/usmb/m1isc/co
 java -cp ".;java-cup-11b-runtime.jar" TP34.exercice1.main.java.fr.usmb.m1isc.compilation.tp.Main TP34/result/tpEvaluateurSource.txt
 ```
 
-#### Exécution (Exercice 2) à finir
+#### Exécution (Exercice 2)
 ```bash
 java -jar jflex-full-1.9.1.jar -d TP34/src/main/java/fr/usmb/m1isc/compilation/tp/ TP34/src/main/jflex/AnalyseurLexical.jflex
 java -jar java-cup-11b.jar -destdir TP34/src/main/java/fr/usmb/m1isc/compilation/tp/ TP34/src/main/cup/AnalyseurSyntaxique.cup
@@ -99,6 +99,7 @@ java -cp ".;java-cup-11b-runtime.jar" TP34.src.main.java.fr.usmb.m1isc.compilati
 # Pour la partie machine à pile
 java -jar vm-0.9.jar pgcd.asm
 java -jar vm-0.9.jar pgcd.asm --debug
+java -jar vm-0.9.jar pgcd_rec.asm
 ```
 
 
