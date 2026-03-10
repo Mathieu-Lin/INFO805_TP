@@ -1,0 +1,60 @@
+stages:
+  - build
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+
+.build:
+  variables:
+    GRADLE_USER_HOME: $CI_PROJECT_DIR/.gradle
+  stage: build
+  script:
+    - ./gradlew --build-cache --warning-mode=all build
+  cache:
+    - key:
+        files:
+          - gradle/wrapper/gradle-wrapper.properties
+      paths:
+        - .gradle/wrapper
+    - key: "${CI_COMMIT_REF_SLUG}_${CI_JOB_NAME_SLUG}"
+      fallback_keys:
+        - "${CI_DEFAULT_BRANCH_SLUG}_${CI_JOB_NAME_SLUG}"
+      paths:
+        - .gradle/caches
+#   artifacts:
+#     when: always
+#     paths:
+#       - build/test-results/
+#       - build/reports/jacoco/
+#     reports:
+#       junit: build/test-results/**/TEST-*.xml
+#       coverage_report:
+#         coverage_format: jacoco
+#         path: build/reports/jacoco/**/*.xml
+
+build:java8:
+  extends: .build
+  image: eclipse-temurin:8-jdk@sha256:0b793df1b9217f3d25c5f820d47e85a20b0a78b0ccd0ab6deb9051502493c855
+  allow_failure: true
+
+build:java11:
+  extends: .build
+  image: eclipse-temurin:11.0.29_7-jdk@sha256:fd9fc42ab01c4db92911d2f1d63743d0de62a1c9183ccf40bd4943990f739e22
+  allow_failure: true
+
+build:java17:
+  extends: .build
+  image: eclipse-temurin:17.0.17_10-jdk@sha256:710bbe5d41a4c48ecd1e8d5be5f05d49132a102ab70961006d0675ed8b387d86
+
+build:java21:
+  extends: .build
+  image: eclipse-temurin:21.0.9_10-jdk@sha256:e8d57b6c5c73d93212a4384f588309b44bc75fd15b38f78e6a6db1b350dc4ef3
+
+build:java25:
+  extends: .build
+  image: eclipse-temurin:25.0.1_8-jdk@sha256:42fc3fe6804ec612f5ef8a613f8c06d8dd578de6207336077387d4cb32edaa9b
+  allow_failure: true

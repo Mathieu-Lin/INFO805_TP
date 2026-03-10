@@ -62,10 +62,44 @@ javac -cp ".;java-cup-11b-runtime.jar" TP2/src/main/java/fr/usmb/m1isc/compilati
 java -cp ".;java-cup-11b-runtime.jar" TP2.src.main.java.fr.usmb.m1isc.compilation.tp.Main TP2/result/tpEvaluateurSource.txt
 ```
 
-## TP3
+## TP34 (26/02/2026)
 
-à suivre
+Génération d'arbres abstraits
 
-## TP4
+L'objectif du TP est d'utiliser les outils JFlex et CUP pour générer des arbres abstraits correspondant à un sous ensemble du langage λ-ada.
 
-à suivre
+### Java
+
+#### Installation
+
+Vous aurez besoin d'installer Java dans le terminal.
+
+#### Exécution (Exercice 1)
+```bash
+java -jar jflex-full-1.9.1.jar -d TP34/exercice1/main/java/fr/usmb/m1isc/compilation/tp/ TP34/exercice1/main/jflex/AnalyseurLexical.jflex
+java -jar java-cup-11b.jar -destdir TP34/exercice1/main/java/fr/usmb/m1isc/compilation/tp/ TP34/exercice1/main/cup/AnalyseurSyntaxique.cup
+javac -cp ".;java-cup-11b-runtime.jar" TP34/exercice1/main/java/fr/usmb/m1isc/compilation/tp/*.java
+java -cp ".;java-cup-11b-runtime.jar" TP34.exercice1.main.java.fr.usmb.m1isc.compilation.tp.Main TP34/result/tpEvaluateurSource.txt
+```
+
+#### Exécution (Exercice 2) à finir
+```bash
+java -jar jflex-full-1.9.1.jar -d TP34/src/main/java/fr/usmb/m1isc/compilation/tp/ TP34/src/main/jflex/AnalyseurLexical.jflex
+java -jar java-cup-11b.jar -destdir TP34/src/main/java/fr/usmb/m1isc/compilation/tp/ TP34/src/main/cup/AnalyseurSyntaxique.cup
+javac -cp ".;java-cup-11b-runtime.jar" TP34/src/main/java/fr/usmb/m1isc/compilation/tp/*.java
+
+# Pour l'exercice 2
+java -cp ".;java-cup-11b-runtime.jar" TP34.src.main.java.fr.usmb.m1isc.compilation.tp.Main TP34/result/pgcd.txt
+java -cp ".;java-cup-11b-runtime.jar" TP34.src.main.java.fr.usmb.m1isc.compilation.tp.Main TP34/result/pgcd_rec.txt
+
+# Pour la partie fibonacci
+java -cp ".;java-cup-11b-runtime.jar" TP34.src.main.java.fr.usmb.m1isc.compilation.tp.Main TP34/result/fibonacci.txt
+java -cp ".;java-cup-11b-runtime.jar" TP34.src.main.java.fr.usmb.m1isc.compilation.tp.Main TP34/result/fibonacci_rec.txt
+
+# Pour la partie machine à pile
+java -jar vm-0.9.jar pgcd.asm
+java -jar vm-0.9.jar pgcd.asm --debug
+```
+
+
+
